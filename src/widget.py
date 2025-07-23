@@ -13,6 +13,7 @@ def mask_account_card(number_card: str) -> str:
 
 
 def get_date(date_string: str) -> str:
+    """преобразование даты в формат 'ДД.ММ.ГГГГ'"""
     date_string_to_date = datetime.strptime(date_string[0:10], "%Y-%m-%d").date()
     formatted_date = date_string_to_date.strftime("%d.%m.%Y")
     return str(formatted_date)
