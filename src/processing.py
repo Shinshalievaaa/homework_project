@@ -1,5 +1,4 @@
-from typing import Iterable
-from typing import Optional
+from typing import Iterable, Optional
 
 
 def filter_by_state(list_to_filter: Iterable[dict], state: Optional[str]) -> list[dict]:
