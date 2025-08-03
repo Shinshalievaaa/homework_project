@@ -2,7 +2,8 @@ from typing import Iterable, Optional
 
 
 def filter_by_state(list_to_filter: Iterable[dict], state: Optional[str] = "EXECUTED") -> list[dict]:
-    """Dозвращает список словарей, содержащий только те, у которых ключ state соответствует указанному значению"""
+    """Функция принимает список словарей и возвращает список словарей, содержащий только те,
+    у которых ключ state (по умолчанию 'EXECUTED') соответствует переданному значению"""
     filtered_list = []
     for item in list_to_filter:
         if state == item["state"]:
@@ -12,5 +13,6 @@ def filter_by_state(list_to_filter: Iterable[dict], state: Optional[str] = "EXEC
 
 
 def sort_by_date(filtered_list: Iterable[dict], sort_reverse: Optional[bool] = True) -> list[dict]:
-    """возвращаtn новый список, отсортированный по дате"""
+    """Принимает список словарей и необязательный параметр, задающий порядок сортировки (по умолчанию — убывание)
+    и возвращает новый список, отсортированный по дате"""
     return sorted(filtered_list, key=lambda item: item["date"], reverse=sort_reverse)
