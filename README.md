@@ -13,6 +13,10 @@ git clone https://github.com/Shinshalievaaa/homework_project.git
 
 ## Использование:
 
+1. Для запуска проекта выполните команду:
+```
+python main.py
+```
 
 ## Документация:
 
