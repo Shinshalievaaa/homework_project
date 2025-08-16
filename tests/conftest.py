@@ -22,7 +22,12 @@ def is_letter_account():
 
 @pytest.fixture
 def incorrect_account_card_number():
-    return ['Maestro 159683786870', 'MasterCard 77158300734726758','Счет 6468647367889477958O',
+    return ['Maestro 159683786870', 'MasterCard 77158300734726758', 'Счет 6468647367889477958O',
             'Счетт 35383033474447895560', 'Visa Classic 6831982476737658',
             'Visa Platinum 89909221l3665229', 'Visa Gold 5999414228426353',
             'Счет 736541084301358743055']
+
+
+@pytest.fixture
+def empty_account_card_number():
+    return ['Maestro ', 'MasterCard ', 'Счет ', '' ]

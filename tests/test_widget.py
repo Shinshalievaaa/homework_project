@@ -23,3 +23,10 @@ def test_incorrect_mask_account_card(incorrect_account_card_number):
     for account_card_number in incorrect_account_card_number:
         with pytest.raises(ValueError):
             get_mask_account(account_card_number)
+
+
+def test_empty_mask_account_card(empty_account_card_number):
+    """тестирование функции на обработку некорректных входных данных и проверка ее устойчивости к ошибкам"""
+    for account_card_number in empty_account_card_number:
+        with pytest.raises(ValueError):
+            get_mask_account(account_card_number)
