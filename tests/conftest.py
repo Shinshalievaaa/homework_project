@@ -31,3 +31,10 @@ def incorrect_account_card_number():
 @pytest.fixture
 def empty_account_card_number():
     return ['Maestro ', 'MasterCard ', 'Счет ', '' ]
+
+
+@pytest.fixture
+def incorrect_date_string():
+    return ['2020-13-11T02:26:18.671407', '2024-11-32T02:26:18.671407', '2025--13T02:26:18.671407'
+            '2022-02-29T02:26:18.671407', '2025-06-31T02:26:18.671407', '025-06-13T02:26:18.671407',
+            '2020-13-T02:26:18.671407', '-13-11T02:26:18.671407','2020-13--11T02:26:18.671407','']
