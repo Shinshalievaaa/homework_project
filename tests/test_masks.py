@@ -45,7 +45,7 @@ def test_get_mask_account(account_number, mask_account):
 
 
 def test_incorrect_len_get_mask_account(incorrect_len_account):
-    """Тестирование обработки номера карты с граничными случаями и нестандартной длиной номеров"""
+    """Тестирование обработки номера счета с граничными случаями и нестандартной длиной номеров"""
     for account_number in incorrect_len_account:
         with pytest.raises(ValueError) as exc_info:
             get_mask_account(account_number)
@@ -54,7 +54,7 @@ def test_incorrect_len_get_mask_account(incorrect_len_account):
 
 
 def test_is_letter_get_mask_account(is_letter_account):
-    """Тестирование обработки номера карты с нечисловыми символами"""
+    """Тестирование обработки номера счета с нечисловыми символами"""
     for account_number in is_letter_account:
         with pytest.raises(ValueError) as exc_info:
             get_mask_account(account_number)
@@ -63,7 +63,7 @@ def test_is_letter_get_mask_account(is_letter_account):
 
 
 def test_empty_get_mask_account():
-    """Тестирование обработки номера карты, где отсутствует номер карты"""
+    """Тестирование обработки номера счета, где отсутствует номер счета"""
     with pytest.raises(ValueError) as exc_info:
         get_mask_account("")
 
