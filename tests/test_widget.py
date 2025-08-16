@@ -45,6 +45,5 @@ def test_incorrect_get_date(incorrect_date_string):
     """Проверка работы функции на различных входных форматах даты, включая граничные случаи
     и нестандартные строки и где отсутствует дата"""
     for date_string in incorrect_date_string:
-        print(date_string)
         with pytest.raises(ValueError):
             get_date(date_string)
