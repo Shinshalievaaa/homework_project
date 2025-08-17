@@ -23,12 +23,12 @@ def sort_by_date(filtered_list: Iterable[dict], sort_reverse: Optional[bool] = T
     и возвращает новый список, отсортированный по дате"""
     if filtered_list == [] or filtered_list is None:
         raise ValueError("Список банковских операций пуст")
-    elif sort_reverse == None:
+    elif sort_reverse is None:
         sort_reverse = True
 
     for item in filtered_list:
         try:
-            date_string_to_date = datetime.strptime(item["date"][0:10], "%Y-%m-%d").date()
+            datetime.strptime(item["date"][0:10], "%Y-%m-%d").date()
         except ValueError:
             raise ValueError("Переданы некорректные или нестандартные форматы дат")
 
