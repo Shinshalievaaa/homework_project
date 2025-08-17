@@ -26,9 +26,9 @@ def sort_by_date(filtered_list: Iterable[dict], sort_reverse: Optional[bool] = T
     elif sort_reverse is None:
         sort_reverse = True
 
-    for item in filtered_list:
+    for item_list in filtered_list:
         try:
-            datetime.strptime(item["date"][0:10], "%Y-%m-%d").date()
+            datetime.strptime(item_list["date"][0:10], "%Y-%m-%d").date()
         except ValueError:
             raise ValueError("Переданы некорректные или нестандартные форматы дат")
 
