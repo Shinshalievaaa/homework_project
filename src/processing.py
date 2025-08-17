@@ -1,4 +1,5 @@
 from typing import Iterable, Optional
+from datetime import datetime
 
 
 def filter_by_state(list_to_filter: Iterable[dict], state_to_filter: Optional[str] = "EXECUTED") -> list[dict]:
@@ -20,6 +21,15 @@ def filter_by_state(list_to_filter: Iterable[dict], state_to_filter: Optional[st
 def sort_by_date(filtered_list: Iterable[dict], sort_reverse: Optional[bool] = True) -> list[dict]:
     """Принимает список словарей и необязательный параметр, задающий порядок сортировки (по умолчанию — убывание)
     и возвращает новый список, отсортированный по дате"""
-    if sort_reverse == None:
+    if filtered_list == [] or filtered_list is None:
+        raise ValueError("Список банковских операций пуст")
+    elif sort_reverse == None:
         sort_reverse = True
+
+    for item in filtered_list:
+        try:
+            date_string_to_date = datetime.strptime(item["date"][0:10], "%Y-%m-%d").date()
+        except ValueError:
+            raise ValueError("Переданы некорректные или нестандартные форматы дат")
+
     return sorted(filtered_list, key=lambda item: item["date"], reverse=sort_reverse)
