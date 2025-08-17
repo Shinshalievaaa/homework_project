@@ -5,7 +5,7 @@ from datetime import datetime
 def filter_by_state(list_to_filter: Iterable[dict], state_to_filter: Optional[str] = "EXECUTED") -> list[dict]:
     """Функция принимает список словарей и возвращает список словарей, содержащий только те,
     у которых статус state (по умолчанию 'EXECUTED') соответствует переданному значению"""
-    if state_to_filter == '' or state_to_filter is None:
+    if state_to_filter == "" or state_to_filter is None:
         state_to_filter = "EXECUTED"
     if list_to_filter == [] or list_to_filter is None:
         raise ValueError("Список банковских операций пуст")
