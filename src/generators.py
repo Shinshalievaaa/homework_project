@@ -2,17 +2,20 @@ from typing import Iterable
 
 
 def filter_by_currency(transactions_list, currency_code):
+    """возвращает итератор, который поочередно выдает транзакции, где валюта операции соответствует заданной """
     transactions_filter_list = list(filter(lambda x: x['operationAmount']['currency']['code'] == currency_code, transactions_list))
     for transaction in transactions_filter_list:
         yield transaction
 
 
 def transaction_descriptions(transactions_list):
+    """возвращает описание каждой операции по очереди из переданного списка"""
     for transaction in transactions_list:
         yield transaction['description']
 
 
 def card_number_generator(start_num, end_num):
+    """выдает номера банковских карт в формате XXXX XXXX XXXX XXXX, где X — цифра номера карты"""
     for i in range(start_num, end_num + 1):
         str_num = str(i)
         num_parts = len(str_num) // 4
