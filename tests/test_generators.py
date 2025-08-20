@@ -1,6 +1,6 @@
 import pytest
 
-from src.generators import filter_by_currency, transaction_descriptions
+from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
 
 
 @pytest.mark.parametrize("filter_list_transactions, currency_code",[(
@@ -74,6 +74,20 @@ def test_filter_by_currency(list_transactions, filter_list_transactions, currenc
         assert next(currency_transactions) == item
 
 
+@pytest.mark.parametrize("filter_list_transactions, currency_code",[([],'VND')])
+def test_filter_no_currency(list_transactions, filter_list_transactions, currency_code):
+    currency_transactions = filter_by_currency(list_transactions, currency_code)
+    for item in filter_list_transactions:# assert filter_by_currency(list_transactions, currency_code) == filter_list_transactions
+        assert next(currency_transactions) == item
+
+
+@pytest.mark.parametrize("filter_list_transactions, currency_code",[([],'RUB')])
+def test_filter_no_list_transactions(filter_list_transactions, currency_code):
+    currency_transactions = filter_by_currency([], currency_code)
+    for item in filter_list_transactions:# assert filter_by_currency(list_transactions, currency_code) == filter_list_transactions
+        assert next(currency_transactions) == item
+
+
 @pytest.mark.parametrize("list_descriptions",[('Перевод организации',
                                                'Перевод со счета на счет',
                                                'Перевод с карты на карту',
@@ -83,3 +97,42 @@ def test_transaction_descriptions(list_transactions, list_descriptions):
      descriptions_transactions = transaction_descriptions(list_transactions)
      for item in list_descriptions:  # assert filter_by_currency(list_transactions, currency_code) == filter_list_transactions
          assert next(descriptions_transactions) == item
+
+
+@pytest.mark.parametrize("list_descriptions",[])
+def test_empty_transaction_descriptions(list_transactions, list_descriptions):
+     descriptions_transactions = transaction_descriptions([])
+     for item in list_descriptions:  # assert filter_by_currency(list_transactions, currency_code) == filter_list_transactions
+         assert next(descriptions_transactions) == item
+
+
+@pytest.mark.parametrize("list_card_number",[('0000 0000 0000 0001',
+                                              '0000 0000 0000 0002',
+                                              '0000 0000 0000 0003',
+                                              '0000 0000 0000 0004',
+                                              '0000 0000 0000 0005')])
+def test_card_number_generator(list_card_number):
+     generator_for_card_number = card_number_generator(1, 5)
+     for card_number in list_card_number:  # assert filter_by_currency(list_transactions, currency_code) == filter_list_transactions
+          assert next(generator_for_card_number) == card_number
+
+
+@pytest.mark.parametrize("list_card_number",[('9999 9999 9999 9996',
+                                              '9999 9999 9999 9997',
+                                              '9999 9999 9999 9998',
+                                              '9999 9999 9999 9999')])
+def test_border_card_number_generator(list_card_number):
+     generator_for_card_number = card_number_generator(9999999999999996, 9999999999999999)
+     for card_number in list_card_number:  # assert filter_by_currency(list_transactions, currency_code) == filter_list_transactions
+          assert next(generator_for_card_number) == card_number
+
+
+@pytest.mark.parametrize("list_card_number",[('0000 0001 0007 8912',
+                                              '0000 0001 0007 8913',
+                                              '0000 0001 0007 8914',
+                                              '0000 0001 0007 8915',
+                                              '0000 0001 0007 8916')])
+def test_middle_card_number_generator(list_card_number):
+     generator_for_card_number = card_number_generator(100078912, 100078916)
+     for card_number in list_card_number:  # assert filter_by_currency(list_transactions, currency_code) == filter_list_transactions
+          assert next(generator_for_card_number) == card_number
