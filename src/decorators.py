@@ -5,7 +5,7 @@ def log(filename = ''):
                 result = func(*args, **kwargs)
                 text_output = f'{func.__name__} ok'
                 if filename != '':
-                    with open(filename, 'w') as f:
+                    with open(filename, 'w', encoding='utf-8') as f:
                         f.write(text_output)
                 else:
                     print(text_output)
@@ -13,7 +13,7 @@ def log(filename = ''):
             except Exception as e:
                 text_output = f'{func.__name__} error: {e}. Inputs: {args}'
                 if filename != '':
-                    with open(filename, 'w') as f:
+                    with open(filename, 'w', encoding='utf-8') as f:
                         f.write(text_output)
                 else:
                     print(text_output)

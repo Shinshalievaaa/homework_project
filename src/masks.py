@@ -1,3 +1,7 @@
+from src.decorators import log
+
+
+@log(filename="mylog.txt")
 def get_mask_card_number(card_number: str) -> str:
     """Принимает на вход номер карты и возвращает ее маску"""
     if card_number == "":
@@ -10,6 +14,7 @@ def get_mask_card_number(card_number: str) -> str:
         return card_number[0:4] + " " + card_number[4:6] + "** **** " + card_number[-4:]
 
 
+@log(filename="mylog.txt")
 def get_mask_account(account_number: str) -> str:
     """Принимает на вход номер счета и возвращает его маску"""
     if account_number == "":
@@ -20,3 +25,4 @@ def get_mask_account(account_number: str) -> str:
         raise ValueError("Номера счета содержит не числовые данные")
     else:
         return "**" + account_number[-4:]
+

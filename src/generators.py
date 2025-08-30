@@ -1,6 +1,7 @@
-from typing import Iterable
+from src.decorators import log
 
 
+@log(filename="mylog.txt")
 def filter_by_currency(transactions_list, currency_code):
     """возвращает итератор, который поочередно выдает транзакции, где валюта операции соответствует заданной """
     transactions_filter_list = list(filter(lambda x: x['operationAmount']['currency']['code'] == currency_code, transactions_list))
@@ -8,12 +9,14 @@ def filter_by_currency(transactions_list, currency_code):
         yield transaction
 
 
+@log(filename="mylog.txt")
 def transaction_descriptions(transactions_list):
     """возвращает описание каждой операции по очереди из переданного списка"""
     for transaction in transactions_list:
         yield transaction['description']
 
 
+@log(filename="mylog.txt")
 def card_number_generator(start_num, end_num):
     """выдает номера банковских карт в формате XXXX XXXX XXXX XXXX, где X — цифра номера карты"""
     for i in range(start_num, end_num + 1):

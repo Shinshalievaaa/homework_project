@@ -1,8 +1,9 @@
 from datetime import datetime
-
 from src.masks import get_mask_account, get_mask_card_number
+from src.decorators import log
 
 
+@log(filename="mylog.txt")
 def mask_account_card(number_card: str) -> str:
     """Обработка информации о картах и о счетах и возвращение замаскированного номеров"""
     name, number = number_card.rsplit(" ", maxsplit=1)
@@ -13,6 +14,7 @@ def mask_account_card(number_card: str) -> str:
     return f"{name} {mask_number}"
 
 
+@log(filename="mylog.txt")
 def get_date(date_string: str) -> str:
     """преобразование даты в формат 'ДД.ММ.ГГГГ'"""
     if date_string == "":
