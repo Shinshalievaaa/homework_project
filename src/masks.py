@@ -25,4 +25,3 @@ def get_mask_account(account_number: str) -> str:
         raise ValueError("Номера счета содержит не числовые данные")
     else:
         return "**" + account_number[-4:]
-

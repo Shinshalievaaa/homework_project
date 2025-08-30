@@ -1,0 +1,12 @@
+Starting get_mask_account
+get_mask_account ok
+Finished get_mask_account
+Starting get_mask_account
+get_mask_account error: Длина номера счета не равна 20. Inputs: ('6468647367889477951',)
+Finished get_mask_account
+Starting get_mask_account
+get_mask_account error: Длина номера счета не равна 20. Inputs: ('6468647367889477951',)
+Finished get_mask_account
+Starting get_mask_account
+get_mask_account ok
+Finished get_mask_account
