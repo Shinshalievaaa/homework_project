@@ -16,6 +16,7 @@ def example_err_function():
 
 
 def test_successful_decorators(capsys):
+    """тестирование успешного выполнения декоратора"""
     example_success_function()
     captured = capsys.readouterr()
     assert captured.out == ('Starting example_success_function\n'
@@ -25,6 +26,7 @@ def test_successful_decorators(capsys):
 
 
 def test_err_decorators(capsys):
+    """тестирование обработки исключений декоратора"""
     example_err_function()
     captured = capsys.readouterr()
     assert captured.out == ('Starting example_err_function\n'

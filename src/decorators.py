@@ -27,8 +27,3 @@ def log(filename = ''):
         return inner
 
     return wrapper
-
-
-
-
-# @log(filename="mylog.txt")
