@@ -1,7 +1,9 @@
 from typing import Iterable, Optional
 from datetime import datetime
+from src.decorators import log
 
 
+@log(filename="mylog.txt")
 def filter_by_state(list_to_filter: Iterable[dict], state_to_filter: Optional[str] = "EXECUTED") -> list[dict]:
     """Функция принимает список словарей и возвращает список словарей, содержащий только те,
     у которых статус state (по умолчанию 'EXECUTED') соответствует переданному значению"""
@@ -18,6 +20,7 @@ def filter_by_state(list_to_filter: Iterable[dict], state_to_filter: Optional[st
         return filtered_list
 
 
+@log(filename="mylog.txt")
 def sort_by_date(filtered_list: Iterable[dict], sort_reverse: Optional[bool] = True) -> list[dict]:
     """Принимает список словарей и необязательный параметр, задающий порядок сортировки (по умолчанию — убывание)
     и возвращает новый список, отсортированный по дате"""
