@@ -9,7 +9,7 @@ def test_read_json_file():
     """тестирование функции по приему путь до JSON-файла и возвращение списка словарей"""
     mock_json = Mock(return_value={})
     json.load = mock_json
-    assert get_transaction_amount('data/operations.json') == {}
+    assert get_transaction_amount('data/operations.json') == []
 
 
 def test_get_transaction_amount_rub():
