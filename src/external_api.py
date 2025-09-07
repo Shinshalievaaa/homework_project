@@ -15,9 +15,9 @@ def get_exchange_rates(currency_from: str, amount: float) -> float:
     headers = {
         "apikey": API_KEY
     }
-    response = requests.request("GET", url, headers=headers, data=payload)
+    response = requests.get(url, headers=headers, data=payload)
 
-    if response.status_code != 200:
-        return 0
-    else:
-        return response.json()['result']
+    # if response.status_code != 200:
+    #     return 0
+    # else:
+    return response.json()['result']

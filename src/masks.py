@@ -21,7 +21,8 @@ def get_mask_account(account_number: str) -> str:
         raise ValueError("Передан пустой номер счета")
     elif len(account_number) != 20:
         raise ValueError("Длина номера счета не равна 20")
-    elif any(x.isalpha() for x in account_number):
+    elif (x.isalpha() for x in account_number):
         raise ValueError("Номера счета содержит не числовые данные")
     else:
         return "**" + account_number[-4:]
+
