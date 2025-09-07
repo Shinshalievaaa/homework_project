@@ -1,4 +1,5 @@
 import json
+from src.external_api import get_exchange_rates
 
 
 def read_json_file(path: str) -> dict:
@@ -14,5 +15,16 @@ def read_json_file(path: str) -> dict:
         return {}
 
 
-
-# print(read_json_file('data/operations.json'))
+def get_transaction_amount(transaction_json: dict) -> float:
+    """принимает на вход транзакцию и возвращает сумму транзакции в рублях"""
+    if type(transaction_json) is dict:
+        values_transaction = transaction_json['operationAmount']
+        amount = values_transaction['amount']
+        currency = values_transaction['currency']
+        currency_code = currency['code']
+        if currency_code == 'RUB':
+            return amount
+        else:
+            return round(get_exchange_rates(currency_code, amount), 2)
+    else:
+        return 0
