@@ -2,7 +2,7 @@ import json
 from src.external_api import get_exchange_rates
 
 
-def read_json_file(path: str) -> dict:
+def read_json_file(path: str) -> list:
     """Принимает путь до JSON-файла и возвращает список словарей с данными о финансовых транзакциях"""
     data = []
     try:
