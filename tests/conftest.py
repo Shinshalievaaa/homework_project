@@ -7,7 +7,7 @@ def incorrect_len_card_number():
 
 @pytest.fixture
 def is_letter_card_number():
-    return ["700079228960636l", "700O792289606361", "700OI92289606361"]
+    return ["700079228960636l", "700O792K89606361", "700OI92289606361"]
 
 
 @pytest.fixture

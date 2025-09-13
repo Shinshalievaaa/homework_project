@@ -10,3 +10,48 @@ Finished get_mask_account
 Starting get_mask_account
 get_mask_account ok
 Finished get_mask_account
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700079228960636l',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700O792K89606361',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700OI92289606361',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700079228960636l',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700O792K89606361',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700OI92289606361',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700079228960636l',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700O792K89606361',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700OI92289606361',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700079228960636l',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700O792K89606361',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700OI92289606361',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700079228960636l',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700O792K89606361',)
+Finished get_mask_card_number
+Starting get_mask_card_number
+get_mask_card_number error: Номера карт содержит не числовые данные. Inputs: ('700OI92289606361',)
+Finished get_mask_card_number
