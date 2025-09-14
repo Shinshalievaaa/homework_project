@@ -7,6 +7,8 @@ from logger import setup_logging
 name_logger = __name__
 logger = setup_logging(name_logger)
 file_handler = logging.FileHandler('log/utils.log')
+file_formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s: %(message)s')
+file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
 logger.setLevel(logging.INFO)
 
