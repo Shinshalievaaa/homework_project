@@ -1,5 +1,3 @@
-# import pytest
-# import requests
 import os
 from unittest.mock import Mock
 from src.utils import read_json_file, get_transaction_amount
