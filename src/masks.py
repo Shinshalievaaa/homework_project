@@ -1,15 +1,15 @@
 import logging
 from src.decorators import log
-from logger import setup_logging
+from src.logger import setup_logging
 
 
 name_logger = __name__
-logger = setup_logging(name_logger)
+logger = logging.getLogger(name_logger)
 file_handler = logging.FileHandler('log/masks.log')
 file_formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s: %(message)s')
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 @log(filename="mylog.txt")
@@ -41,7 +41,7 @@ def get_mask_account(account_number: str) -> str:
     elif len(account_number) != 20:
         logger.error(f"Длина номера счета {len(account_number)} не равна 20")
         raise ValueError("Длина номера счета не равна 20")
-    elif (x.isalpha() for x in account_number):
+    elif any(x.isalpha() for x in account_number):
         logger.error(f"Номера счета содержит не числовые данные")
         raise ValueError("Номера счета содержит не числовые данные")
     else:
