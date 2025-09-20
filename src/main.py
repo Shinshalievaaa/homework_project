@@ -26,15 +26,15 @@ if __name__ == "__main__":
 
     if type_source == "1":
         print("Программа: Для обработки выбран JSON - файл.")
-        data = read_json_file('data/operations.json')
+        data = read_json_file('../data/operations.json')
         type_source = 'json'
     elif type_source == "2":
         print("Программа: Для обработки выбран CSV - файл.")
-        data = load_csv_file('data/transactions.csv')
+        data = load_csv_file('../data/transactions.csv')
         type_source = 'csv'
     elif type_source == "3":
         print("Программа: Для обработки выбран EXCEL - файл.")
-        data = load_excel_file('data/transactions_excel.xlsx')
+        data = load_excel_file('../data/transactions_excel.xlsx')
         type_source = 'excel'
 
     question_text = """Программа: Введите статус, по которому необходимо выполнить фильтрацию. 
