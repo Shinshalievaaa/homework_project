@@ -1,7 +1,7 @@
 import json
 import logging
-from external_api import get_exchange_rates
-from logger import setup_logging
+from src.external_api import get_exchange_rates
+from src.logger import setup_logging
 
 
 name_logger = __name__
@@ -10,7 +10,7 @@ file_handler = logging.FileHandler('log/utils.log')
 file_formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s: %(message)s')
 file_handler.setFormatter(file_formatter)
 logger.addHandler(file_handler)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 
 def read_json_file(path: str) -> list:

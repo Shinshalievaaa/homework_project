@@ -2,9 +2,12 @@ from src.decorators import log
 
 
 @log(filename="mylog.txt")
-def filter_by_currency(transactions_list, currency_code):
+def filter_by_currency(transactions_list, currency_code, type_source = "json"):
     """возвращает итератор, который поочередно выдает транзакции, где валюта операции соответствует заданной """
-    transactions_filter_list = list(filter(lambda x: x['operationAmount']['currency']['code'] == currency_code, transactions_list))
+    if type_source == "json":
+        transactions_filter_list = list(filter(lambda x: 'operationAmount' in x and x['operationAmount']['currency']['code'] == currency_code, transactions_list))
+    else:
+        transactions_filter_list = list(filter(lambda x: 'currency_code' in x and x['currency_code'] == currency_code, transactions_list))
     for transaction in transactions_filter_list:
         yield transaction
 
