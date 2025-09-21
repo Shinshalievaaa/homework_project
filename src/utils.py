@@ -61,7 +61,11 @@ def get_stock_price() -> list:
     #         {'stock': 'GOOGL', 'price': 240.73},
     #         {'stock': 'MSFT', 'price': 485.11},
     #         {'stock': 'TSLA', 'price': 400.71}]
-    stock_list = read_json_file("src/user_settings.json")["user_stocks"]
+    try:
+        stock_list = read_json_file("src/user_settings.json")["user_stocks"]
+    except ValueError:
+        logger.error(f"Не удалось прочитать настройки пользователя")
+        return []
 
     url = "https://yh-finance8.p.rapidapi.com/stock/get_summary"
     headers = {
@@ -83,7 +87,11 @@ def get_stock_price() -> list:
 
 def get_list_exchange_rates() -> list:
     """возвращает списка валют с курсами из настроек пользователя"""
-    currencies_list = read_json_file("src/user_settings.json")["user_currencies"]
+    try:
+        currencies_list = read_json_file("src/user_settings.json")["user_currencies"]
+    except ValueError:
+        logger.error(f"Не удалось прочитать настройки пользователя")
+        return []
 
     currencies_rates = []
 

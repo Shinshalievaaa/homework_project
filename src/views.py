@@ -1,10 +1,23 @@
 import json
+import logging
+
+from logger import setup_logging
 from datetime import datetime
 from src.utils import (get_stock_price,
                    get_list_exchange_rates,
                    get_transactions_data,
                    get_information_for_each_card,
                    get_top_5_transactions_by_payment_amount)
+
+
+name_logger = __name__
+logger = setup_logging(name_logger)
+file_handler = logging.FileHandler('log/utils.log')
+file_formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s: %(message)s')
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
+logger.setLevel(logging.DEBUG)
+
 
 def main(current_date: str) -> json:
     """принимает на вход строку с датой и временем в формате YYYY-MM-DD HH:MM:SS
@@ -29,7 +42,7 @@ def main(current_date: str) -> json:
             transactions_data = get_transactions_data()
             information_for_cards = get_information_for_each_card(transactions_data)
             top_5_transactions = get_top_5_transactions_by_payment_amount(transactions_data)
-            currencies_rates    = get_list_exchange_rates
+            currencies_rates = get_list_exchange_rates
             stock_prices = get_stock_price()
             response = {"greeting": greeting,
                         "cards": information_for_cards,
@@ -39,6 +52,7 @@ def main(current_date: str) -> json:
             return response
 
         except ValueError:
+            logger.error(f"Неверный формат даты и времени. Используйте YYYY-MM-DD HH:MM:SS")
             return json.dumps({"error": "Неверный формат даты и времени. Используйте YYYY-MM-DD HH:MM:SS"},
                               ensure_ascii=False)
 
