@@ -5,12 +5,12 @@ import requests
 from external_api import get_exchange_rates
 from logger import setup_logging
 from load_files import load_excel_file
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 import os
 
 
-# load_dotenv()
-# API_KEY = os.getenv('RAPID_API_KEY')
+load_dotenv()
+RAPID_API_KEY = os.getenv('RAPID_API_KEY')
 
 name_logger = __name__
 logger = setup_logging(name_logger)
@@ -55,34 +55,34 @@ def get_transaction_amount(transaction: dict) -> float:
 
 
 def get_stock_price() -> list:
+    """возвращает стоимость списка акций из S&P500 из настроек пользователя"""
+    # return [{'stock': 'AAPL', 'price': 240.0},
+    #         {'stock': 'AMZN', 'price': 220.82},
+    #         {'stock': 'GOOGL', 'price': 240.73},
+    #         {'stock': 'MSFT', 'price': 485.11},
+    #         {'stock': 'TSLA', 'price': 400.71}]
+    stock_list = read_json_file("src/user_settings.json")["user_stocks"]
 
-    return [{'stock': 'AAPL', 'price': 240.0},
-            {'stock': 'AMZN', 'price': 220.82},
-            {'stock': 'GOOGL', 'price': 240.73},
-            {'stock': 'MSFT', 'price': 485.11},
-            {'stock': 'TSLA', 'price': 400.71}]
-    # stock_list = read_json_file("src/user_settings.json")["user_stocks"]
-    #
-    # url = "https://yh-finance8.p.rapidapi.com/stock/get_summary"
-    # headers = {
-    #     "X-RapidAPI-Key": RAPID_API_KEY
-    #     "X-RapidAPI-Host": "yh-finance8.p.rapidapi.com"
-    # }
-    #
-    # stock_prices = []
-    # for stock in stock_list:
-    #     querystring = {"symbol": stock, "region": "US"}
-    #     response = requests.get(url, headers=headers, params=querystring)
-    #     data = response.json()
-    #     current_price = data[stock]['bid']
-    #     stock_prices.append({"stock": stock, "price": current_price})
-    #     # print(f"Текущая цена акций Google: {current_price}")
-    #
-    # return stock_prices
+    url = "https://yh-finance8.p.rapidapi.com/stock/get_summary"
+    headers = {
+        "X-RapidAPI-Key": RAPID_API_KEY,
+        "X-RapidAPI-Host": "yh-finance8.p.rapidapi.com"
+    }
+
+    stock_prices = []
+    for stock in stock_list:
+        querystring = {"symbol": stock, "region": "US"}
+        response = requests.get(url, headers=headers, params=querystring)
+        data = response.json()
+        current_price = data[stock]['bid']
+        stock_prices.append({"stock": stock, "price": current_price})
+        # print(f"Текущая цена акций Google: {current_price}")
+
+    return stock_prices
 
 
 def get_list_exchange_rates() -> list:
-
+    """возвращает списка валют с курсами из настроек пользователя"""
     currencies_list = read_json_file("src/user_settings.json")["user_currencies"]
 
     currencies_rates = []
@@ -95,12 +95,12 @@ def get_list_exchange_rates() -> list:
 
 
 def get_transactions_data() -> list:
-    """"""
+    """загружает все банковские операции пользователя"""
     return load_excel_file('data/operations.xlsx')
 
 
 def get_information_for_each_card(transactions_data) -> list:
-    """"""
+    """возвращает сводную информацию по каждой карте"""
     df = pd.DataFrame(transactions_data)
     df_new = df[df['Сумма платежа'] < 0].groupby('Номер карты').agg({'Сумма платежа': 'sum'})
     df_new_ = df_new.reset_index()
@@ -109,7 +109,7 @@ def get_information_for_each_card(transactions_data) -> list:
     return df_new_.to_dict('records')
 
 def get_top_5_transactions_by_payment_amount(transactions_data) -> list:
-    """"""
+    """возвращает топ-5 транзакций по сумме платежа"""
     df = pd.DataFrame(transactions_data)
     df_sort = df.loc[:, ['Дата платежа', 'Сумма платежа', 'Категория', 'Описание']]
     df_sort['Модуль cуммы платежа'] = df_sort['Сумма платежа'].abs()
@@ -123,4 +123,4 @@ def get_top_5_transactions_by_payment_amount(transactions_data) -> list:
     return df_sort.to_dict('records')
 
 
-print(get_list_exchange_rates())
+# print(get_list_exchange_rates())

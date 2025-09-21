@@ -1,13 +1,15 @@
 import json
 from datetime import datetime
-from utils import (get_stock_price,
+from src.utils import (get_stock_price,
                    get_list_exchange_rates,
                    get_transactions_data,
                    get_information_for_each_card,
                    get_top_5_transactions_by_payment_amount)
 
 def main(current_date: str) -> json:
-    """"""
+    """принимает на вход строку с датой и временем в формате YYYY-MM-DD HH:MM:SS
+     и возвращает JSON-ответ с данными по всем операциям пользователя, стоимостью акций
+     и курсом валют"""
     if current_date == "":
         return json.dumps({"error": "Передана пустая дата"},ensure_ascii=False)
     else:
@@ -34,11 +36,11 @@ def main(current_date: str) -> json:
                         "top_transactions": top_5_transactions,
                         "currency_rates": currencies_rates,
                         "stock_prices": stock_prices}
-            return json.dumps(response, ensure_ascii=False)
+            return response
 
         except ValueError:
             return json.dumps({"error": "Неверный формат даты и времени. Используйте YYYY-MM-DD HH:MM:SS"},
                               ensure_ascii=False)
 
 
-print(main('2025-09-20 20:22:07'))
+# print(main('2025-09-20 20:22:07'))
