@@ -26,6 +26,8 @@ def investment_bank(month: str, transactions: list[dict[str, any]], limit: int) 
     df_month['payment_amount_module'] = df_month['Сумма операции'].abs()
     df_month['investment_amount'] = ((df_month['payment_amount_module'].apply(math.ceil) + (
                 limit - 1)) // limit * limit) - df_month['payment_amount_module']
+    sum_investment = df_month['investment_amount'].sum()
+    return sum_investment
 
-    # df['payment_date'] = df['Дата платежа'].astype(str).apply(
-    #     lambda x: datetime.strptime(x, '%d.%m.%Y').replace(day=1) if x != 'nan' else None)
+# df['payment_date'] = df['Дата платежа'].astype(str).apply(
+#     lambda x: datetime.strptime(x, '%d.%m.%Y').replace(day=1) if x != 'nan' else None)
