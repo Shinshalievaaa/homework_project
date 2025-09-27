@@ -15,13 +15,13 @@ def spending_by_workday(transactions: pd.DataFrame, end_date: Optional[str] = No
     three_months_ago = date_value - relativedelta(months=3)
     date_value = date_value + timedelta(days=1)
     transactions['Дата операции'] = pd.to_datetime(transactions['Дата операции'], errors='coerce')
-    df_cleaned = transactions.dropna(subset=['Дата операции']).copy()
-    df_new = df_cleaned[(df_cleaned['Дата операции'] >= three_months_ago)
-                        & (df_cleaned['Дата операции'] < date_value)
-                        & (df_cleaned['Категория'] != 'Переводы')
-                        & (df_cleaned['Сумма операции'] < 0)].sort_values(by='Дата операции')[['Дата операции', 'Сумма операции']]
-    df_new['weekday'] = df_new['Дата операции'].dt.weekday
-    df_new['day_type'] = df_new['weekday'].apply(lambda x: 'Weekday' if x < 5 else 'Weekend')
+    df_copy = transactions.dropna(subset=['Дата операции']).copy()
+    df_filter = df_copy[(df_copy['Дата операции'] >= three_months_ago)
+                & (df_copy['Дата операции'] < date_value)
+                & (df_copy['Категория'] != 'Переводы')
+                & (df_copy['Сумма операции'] < 0)].sort_values(by='Дата операции')[['Дата операции', 'Сумма операции']]
+    df_filter['weekday'] = df_filter['Дата операции'].dt.weekday
+    df_filter['day_type'] = df_filter['weekday'].apply(lambda x: 'Weekday' if x < 5 else 'Weekend')
 
-    average_spending = df_new.groupby('day_type')['Сумма операции'].sum()
-    return average_spending
+    average_spending_by_workday = df_filter.groupby('day_type')['Сумма операции'].mean()
+    return average_spending_by_workday
