@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 # pip install python - dateutil
 
 
-def spending_by_weekday(transactions: pd.DataFrame, end_date: Optional[str] = None) -> pd.DataFrame:
+def spending_by_workday(transactions: pd.DataFrame, end_date: Optional[str] = None) -> pd.DataFrame:
     """выводит средние траты в рабочий и в выходной день за последние три месяца (от переданной даты)"""
     if end_date is None:
         date_value = datetime.combine(date.today(), datetime.min.time())
