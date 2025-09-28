@@ -1,10 +1,10 @@
 import pandas as pd
 import logging
-# import os
+
 from typing import Optional
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
-from utils import get_transactions_data
+from src.utils import get_transactions_data
 
 
 name_logger = __name__

@@ -21,8 +21,7 @@ logger.setLevel(logging.DEBUG)
 
 def main(current_date: str) -> json:
     """принимает на вход строку с датой и временем в формате YYYY-MM-DD HH:MM:SS
-     и возвращает JSON-ответ с данными по всем операциям пользователя, стоимостью акций
-     и курсом валют"""
+     и возвращает JSON-ответ с данными по всем операциям пользователя, стоимостью акций и курсом валют"""
     if current_date == "":
         return json.dumps({"error": "Передана пустая дата"},ensure_ascii=False)
     else:
@@ -53,8 +52,8 @@ def main(current_date: str) -> json:
 
         except ValueError:
             logger.error(f"Неверный формат даты и времени. Используйте YYYY-MM-DD HH:MM:SS")
-            return json.dumps({"error": "Неверный формат даты и времени. Используйте YYYY-MM-DD HH:MM:SS"},
-                              ensure_ascii=False)
+            raise ValueError("Неверный формат даты и времени. Используйте YYYY-MM-DD HH:MM:SS")
 
 
-# print(main('2025-09-20 20:22:07'))
+if __name__ == '__main__':
+    print(main('2025-09-20 20:22:07'))

@@ -2,7 +2,6 @@ import re
 from typing import Iterable, Optional
 from datetime import datetime
 from src.decorators import log
-from collections import Counter
 
 
 @log(filename="mylog.txt")
