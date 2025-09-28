@@ -1,10 +1,45 @@
 import pandas as pd
+import logging
+# import os
 from typing import Optional
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
-# pip install python - dateutil
+from utils import get_transactions_data
 
 
+name_logger = __name__
+logger = logging.getLogger(name_logger)
+file_handler = logging.FileHandler('log/reports.log')
+file_formatter = logging.Formatter('%(asctime)s %(name)s %(levelname)s: %(message)s')
+file_handler.setFormatter(file_formatter)
+logger.addHandler(file_handler)
+logger.setLevel(logging.DEBUG)
+
+
+def report_saver(filename=None):
+    """записывает в файл результат, который возвращает функция, формирующая отчет"""
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            result = func(*args, **kwargs)
+            if filename:
+                output_filename = filename
+            else:
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                output_filename = f"reports/{func.__name__}_report_{timestamp}.txt"
+
+            try:
+                with open(output_filename, 'w', encoding='utf-8') as f:
+                    f.write(str(result))
+                logger.info(f"Отчет сохранен в файл {output_filename}")
+            except IOError as e:
+                logger.error(f"Ошибка сохранения отчета в файл {output_filename}: {e}")
+                raise ValueError(f"Ошибка сохранения отчета в файл {output_filename}: {e}")
+            return result
+        return wrapper
+    return decorator
+
+
+@report_saver(None)
 def spending_by_workday(transactions: pd.DataFrame, end_date: Optional[str] = None) -> pd.DataFrame:
     """выводит средние траты в рабочий и в выходной день за последние три месяца (от переданной даты)"""
     if end_date is None:
@@ -14,7 +49,7 @@ def spending_by_workday(transactions: pd.DataFrame, end_date: Optional[str] = No
 
     three_months_ago = date_value - relativedelta(months=3)
     date_value = date_value + timedelta(days=1)
-    transactions['Дата операции'] = pd.to_datetime(transactions['Дата операции'], errors='coerce')
+    transactions['Дата операции'] = pd.to_datetime(transactions['Дата операции'], errors='coerce', dayfirst=True)
     df_copy = transactions.dropna(subset=['Дата операции']).copy()
     df_filter = df_copy[(df_copy['Дата операции'] >= three_months_ago)
                 & (df_copy['Дата операции'] < date_value)
@@ -25,3 +60,9 @@ def spending_by_workday(transactions: pd.DataFrame, end_date: Optional[str] = No
 
     average_spending_by_workday = df_filter.groupby('day_type')['Сумма операции'].mean()
     return average_spending_by_workday
+
+
+if __name__ == '__main__':
+    transactions_data = get_transactions_data()
+    df_transactions = pd.DataFrame(transactions_data)
+    spending_by_workday(df_transactions, '31.12.2021')
