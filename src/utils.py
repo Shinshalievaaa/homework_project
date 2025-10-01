@@ -5,7 +5,7 @@ import requests
 import os
 
 from src.external_api import get_exchange_rates
-from logger import setup_logging
+from src.logger import setup_logging
 from src.load_files import load_excel_file
 from dotenv import load_dotenv
 
@@ -63,18 +63,18 @@ def get_stock_price() -> list:
         logger.error(f"Не удалось прочитать настройки пользователя")
         return []
 
-    url = "https://yh-finance8.p.rapidapi.com/stock/get_summary"
+    url = "https://yahoo-finance15.p.rapidapi.com/api/v1/markets/quote"
     headers = {
         "X-RapidAPI-Key": RAPID_API_KEY,
-        "X-RapidAPI-Host": "yh-finance8.p.rapidapi.com"
+        "X-RapidAPI-Host": "yahoo-finance15.p.rapidapi.com"
     }
 
     stock_prices = []
     for stock in stock_list:
-        querystring = {"symbol": stock, "region": "US"}
+        querystring = {"ticker": stock, "type": "STOCKS"}
         response = requests.get(url, headers=headers, params=querystring)
         data = response.json()
-        current_price = data[stock]['bid']
+        current_price = data['body']['primaryData']['bidPrice']
         stock_prices.append({"stock": stock, "price": current_price})
 
     return stock_prices
@@ -91,8 +91,9 @@ def get_list_exchange_rates() -> list:
     currencies_rates = []
 
     for currency in currencies_list:
+        exchange_rates = get_exchange_rates(currency, 1)
         currencies_rates.append({ "currency": currency,
-                                  "rate": get_exchange_rates(currency,1)})
+                                  "rate": exchange_rates})
 
     return currencies_rates
 
@@ -115,7 +116,7 @@ def get_top_5_transactions_by_payment_amount(transactions_data) -> list:
     """возвращает топ-5 транзакций по сумме платежа"""
     df = pd.DataFrame(transactions_data)
     df_sort = df.loc[:, ['Дата платежа', 'Сумма платежа', 'Категория', 'Описание']]
-    df_sort['].abs_amount'] = df_sort['Сумма платежа'].abs()
+    df_sort['abs_amount'] = df_sort['Сумма платежа'].abs()
     df_sort = df_sort.sort_values(by='abs_amount', ascending=False)[0:5]
     df_sort.rename(columns = {'Дата платежа': 'date',
                               'Сумма платежа': 'amount',
