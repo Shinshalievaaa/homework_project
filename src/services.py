@@ -2,6 +2,7 @@ import pandas as pd
 import calendar
 import math
 import logging
+import json
 
 from src.logger import setup_logging
 from datetime import datetime, timedelta
@@ -17,7 +18,7 @@ logger.addHandler(file_handler)
 logger.setLevel(logging.DEBUG)
 
 
-def investment_bank(month: str, transactions: list[dict[str,Any]], limit: int) -> dict:
+def investment_bank(month: str, transactions: list[dict[str,Any]], limit: int) -> json:
     """округляет расходы в списке транзакций до шага округления limit, и возвращает
     разницу между фактической суммой трат по карте и суммой округления, которая будет
     попадать насчет «Инвесткопилки»"""
@@ -40,5 +41,5 @@ def investment_bank(month: str, transactions: list[dict[str,Any]], limit: int) -
                 limit - 1)) // limit * limit) - df_month['payment_amount_module']
     sum_investment = round(df_month['investment_amount'].sum(),2)
 
-    result = {"investment_amount" : float(sum_investment)}
+    result = json.dumps({"investment_amount" : float(sum_investment)})
     return result

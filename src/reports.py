@@ -1,10 +1,10 @@
 import pandas as pd
 import logging
+import json
 
 from typing import Optional
 from datetime import datetime, timedelta, date
 from dateutil.relativedelta import relativedelta
-from src.utils import get_transactions_data
 
 
 name_logger = __name__
@@ -40,7 +40,7 @@ def report_saver(filename=None):
 
 
 @report_saver(None)
-def spending_by_workday(transactions: pd.DataFrame, end_date: Optional[str] = None) -> pd.DataFrame:
+def spending_by_workday(transactions: pd.DataFrame, end_date: Optional[str] = None) -> json:
     """выводит средние траты в рабочий и в выходной день за последние три месяца (от переданной даты)"""
     if end_date is None:
         date_value = datetime.combine(date.today(), datetime.min.time())
@@ -58,11 +58,6 @@ def spending_by_workday(transactions: pd.DataFrame, end_date: Optional[str] = No
     df_filter['weekday'] = df_filter['Дата операции'].dt.weekday
     df_filter['day_type'] = df_filter['weekday'].apply(lambda x: 'Weekday' if x < 5 else 'Weekend')
 
-    average_spending_by_workday = df_filter.groupby('day_type')['Сумма операции'].mean()
-    return average_spending_by_workday
-
-
-if __name__ == '__main__':
-    transactions_data = get_transactions_data()
-    df_transactions = pd.DataFrame(transactions_data)
-    spending_by_workday(df_transactions, '31.12.2021')
+    spending_by_day_type = df_filter.groupby('day_type')['Сумма операции'].mean().round(2)
+    return json.dumps({"Weekday": float(spending_by_day_type['Weekday']),
+                       "Weekend": float(spending_by_day_type['Weekend'])})

@@ -48,7 +48,7 @@ def main(current_date: str) -> json:
                         "top_transactions": top_5_transactions,
                         "currency_rates": currencies_rates,
                         "stock_prices": stock_prices}
-            return response
+            return json.dumps(response)
 
         except ValueError:
             logger.error(f"Неверный формат даты и времени. Используйте YYYY-MM-DD HH:MM:SS")
