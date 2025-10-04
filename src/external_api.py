@@ -17,7 +17,4 @@ def get_exchange_rates(currency_from: str, amount: float) -> float:
     }
     response = requests.get(url, headers=headers, data=payload)
 
-    # if response.status_code != 200:
-    #     return 0
-    # else:
-    return response.json()['result']
+    return round(response.json()['result'],2)

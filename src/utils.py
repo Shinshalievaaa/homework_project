@@ -1,8 +1,17 @@
 import json
 import logging
-from src.external_api import get_exchange_rates
-from src.logger import setup_logging
+import pandas as pd
+import requests
+import os
 
+from external_api import get_exchange_rates
+from src.logger import setup_logging
+from src.load_files import load_excel_file
+from dotenv import load_dotenv
+
+
+load_dotenv()
+RAPID_API_KEY = os.getenv('RAPID_API_KEY')
 
 name_logger = __name__
 logger = setup_logging(name_logger)
@@ -44,3 +53,75 @@ def get_transaction_amount(transaction: dict) -> float:
     else:
         logger.warning(f"Не удалось прочитать транзакцию")
         return 0
+
+
+def get_stock_price() -> list:
+    """возвращает стоимость списка акций из S&P500 из настроек пользователя"""
+    try:
+        stock_list = read_json_file("src/user_settings.json")["user_stocks"]
+    except ValueError:
+        logger.error(f"Не удалось прочитать настройки пользователя")
+        return []
+
+    url = "https://yahoo-finance15.p.rapidapi.com/api/v1/markets/quote"
+    headers = {
+        "X-RapidAPI-Key": RAPID_API_KEY,
+        "X-RapidAPI-Host": "yahoo-finance15.p.rapidapi.com"
+    }
+
+    stock_prices = []
+    for stock in stock_list:
+        querystring = {"ticker": stock, "type": "STOCKS"}
+        response = requests.get(url, headers=headers, params=querystring)
+        data = response.json()
+        current_price = data['body']['primaryData']['bidPrice']
+        stock_prices.append({"stock": stock, "price": current_price})
+
+    return stock_prices
+
+
+def get_list_exchange_rates() -> list:
+    """возвращает списка валют с курсами из настроек пользователя"""
+    try:
+        currencies_list = read_json_file("src/user_settings.json")["user_currencies"]
+    except ValueError:
+        logger.error(f"Не удалось прочитать настройки пользователя")
+        return []
+
+    currencies_rates = []
+
+    for currency in currencies_list:
+        exchange_rates = get_exchange_rates(currency, 1)
+        currencies_rates.append({ "currency": currency,
+                                  "rate": exchange_rates})
+
+    return currencies_rates
+
+
+def get_transactions_data() -> list:
+    """загружает все банковские операции пользователя"""
+    return load_excel_file('data/operations.xlsx')
+
+
+def get_information_for_each_card(transactions_data) -> list:
+    """возвращает сводную информацию по каждой карте"""
+    df = pd.DataFrame(transactions_data)
+    df_new = df[df['Сумма платежа'] < 0].groupby('Номер карты').agg({'Сумма платежа': 'sum'})
+    df_new_ = df_new.reset_index()
+    df_new_.rename(columns={'Номер карты': 'last_digits', 'Сумма платежа': 'total_spent'}, inplace=True)
+    df_new_['cashback'] = round(df_new_['total_spent'] * 0.01, 2)
+    return df_new_.to_dict('records')
+
+def get_top_5_transactions_by_payment_amount(transactions_data) -> list:
+    """возвращает топ-5 транзакций по сумме платежа"""
+    df = pd.DataFrame(transactions_data)
+    df_sort = df.loc[:, ['Дата платежа', 'Сумма платежа', 'Категория', 'Описание']]
+    df_sort['abs_amount'] = df_sort['Сумма платежа'].abs()
+    df_sort = df_sort.sort_values(by='abs_amount', ascending=False)[0:5]
+    df_sort.rename(columns = {'Дата платежа': 'date',
+                              'Сумма платежа': 'amount',
+                              'Категория': 'category',
+                              'Описание': 'description'},
+                   inplace=True)
+    df_sort = df_sort.drop('abs_amount', axis=1)
+    return df_sort.to_dict('records')

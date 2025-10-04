@@ -1,6 +1,5 @@
 import logging
 from src.decorators import log
-from src.logger import setup_logging
 
 
 name_logger = __name__
