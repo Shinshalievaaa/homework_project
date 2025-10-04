@@ -4,7 +4,7 @@ import pandas as pd
 import requests
 import os
 
-from src.external_api import get_exchange_rates
+from external_api import get_exchange_rates
 from src.logger import setup_logging
 from src.load_files import load_excel_file
 from dotenv import load_dotenv
